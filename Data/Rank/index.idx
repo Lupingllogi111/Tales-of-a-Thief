@@ -1,0 +1,51 @@
+﻿{
+"Version": "0.7.24.0",
+"Object": {
+"$type": "System.Collections.Generic.Dictionary`2[[System.String, System.Private.CoreLib],[RogueEssence.Data.EntrySummary, RogueEssence]], System.Private.CoreLib",
+"rookie": {
+"Name": {
+"DefaultText": "Rookie",
+"LocalTexts": {}
+},
+"Released": true,
+"Comment": "",
+"SortOrder": 0
+},
+"crook": {
+"Name": {
+"DefaultText": "Crook",
+"LocalTexts": {}
+},
+"Released": true,
+"Comment": "",
+"SortOrder": 0
+},
+"thug": {
+"Name": {
+"DefaultText": "Thug",
+"LocalTexts": {}
+},
+"Released": true,
+"Comment": "",
+"SortOrder": 0
+},
+"pickpocketer": {
+"Name": {
+"DefaultText": "Pickpocketer",
+"LocalTexts": {}
+},
+"Released": true,
+"Comment": "",
+"SortOrder": 0
+},
+"criminal": {
+"Name": {
+"DefaultText": "Criminal",
+"LocalTexts": {}
+},
+"Released": true,
+"Comment": "",
+"SortOrder": 0
+}
+}
+}
