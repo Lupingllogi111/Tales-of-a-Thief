@@ -29,31 +29,13 @@ end
 ---thieves_hideout.ExitSegment(zone, result, rescue, segmentID, mapID)
 --Engine callback function
 function thieves_hideout.ExitSegment(zone, result, rescue, segmentID, mapID) 
-
-    if result ~= RogueEssence.Data.GameProgress.ResultType.Cleared then -- If you fainted...
-        if not SV.guild_maze_clearing.test_done then -- If it's the first time...
-            GAME:EndDungeonRun(result, "thieves_hideout", -1, 2, 2, false, false)
-            GAME:EnterZone("thieves_hideout", -1, 2, 2)
-        else --If it's not the first day  
-            --Go to the guild
-            
-        end
-    else -- If you won...
-        if segmentID == 1 then
-            SV.guild_maze_clearing.beat_boss = true
-        elseif segmentID == 0 then
-            --GAME:EndDungeonRun(result, "thieves_hideout", -1, 3, 0, false, false)
-        end
-        GAME:EnterZone("thieves_hideout", -1, 3, 0)
-    end
-    
-    --[[
     if result ~= RogueEssence.Data.GameProgress.ResultType.Cleared then -- If you fainted...
         if not SV.guild_maze_clearing.test_done then -- If it's the first time...
             GAME:EndDungeonRun(result, "thieves_hideout", -1, 2, 2, false, false)
             GAME:EnterZone("thieves_hideout", -1, 2, 2)
         else --If it's not the first day  
             --Go to the guild and end the day
+            GAME:EndDungeonRun(result, "thieves_hideout", 0, 0, 0, false, false)
           
         end
     else -- If you won...
