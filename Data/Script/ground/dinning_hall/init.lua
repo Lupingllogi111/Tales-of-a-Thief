@@ -72,8 +72,10 @@ function dinning_hall.Init(map)
 
 
   else
-    GROUND:Hide('Celia_regular')
+    SOUND:FadeOutBGM(1)
 
+    GROUND:Hide('Celia_regular')
+    dinnerCutscene()
 
 
   end
@@ -217,9 +219,9 @@ end
 ---dinning_hall.Enter(map)
 --Engine callback function
 function dinning_hall.Enter(map)
-
-  GAME:FadeIn(20)
-
+  if not SV.guild.having_dinner then
+    GAME:FadeIn(20)
+  end
 end
 
 ---dinning_hall.Exit(map)
@@ -338,5 +340,70 @@ function dinning_hall.Teammate1_Action(obj, activator)
 	GAME:CutsceneMode(false)
 
 end
-return dinning_hall
+function dinnerCutscene()
+  GAME:MoveCamera(-360, 144, 1, false)
 
+	GAME:CutsceneMode(true)
+
+  local player = CH('PLAYER')
+  local partner = CH('Teammate1')
+  local eve = CH('Eve')
+  local dex = CH('dex')
+  local kit = CH('kit')
+  local lilith = CH('lilith')
+  local boss = CH('boss')
+  local lily = CH('lily')
+  local kiran = CH('kiran')
+  local lucio = CH('lucio')
+  local celia = CH('celia_dinning')
+
+  local mrkr = MRKR('dinner_mrkr_2')
+  GROUND:TeleportTo(partner, mrkr.Position.X, mrkr.Position.Y, mrkr.Direction)
+
+  GROUND:CharSetAnim(player, "Eat", true)
+  GROUND:CharSetAnim(partner, "Eat", true)
+  GROUND:CharSetAnim(lily, "Idle", true)
+  GROUND:CharSetAnim(lilith, "Eat", true)
+  --GROUND:CharSetAnim(celia, "Eat", true)
+
+  SOUND:LoopSE("dinner time")
+  GROUND:CharSetEmote(boss, "happy", 0)
+  GROUND:CharSetEmote(dex, "happy", 0)
+  GROUND:CharSetEmote(eve, "happy", 0)
+  GROUND:CharSetEmote(lucio, "happy", 0)
+  GAME:FadeIn(20)
+  
+  
+  local coro1 = TASK:BranchCoroutine(function() GAME:MoveCamera(95, 144, 200, false) end)
+  local coro2 = TASK:BranchCoroutine(function()  GAME:WaitFrames(120)
+    GROUND:CharTurnToCharAnimated(kit, lilith)
+    GROUND:CharSetEmote(kit, "sweatdrop", 1)
+  
+  
+  
+    GAME:WaitFrames(120)
+    GROUND:CharSetEmote(lucio, "happy", 1)
+  
+    GROUND:CharTurnToCharAnimated(kiran, lucio)
+    GROUND:CharSetEmote(kiran, "happy", 0)
+  end)
+  TASK:JoinCoroutines({coro1,coro2})
+
+ 
+
+  GAME:WaitFrames(260)
+  GAME:FadeOut(false, 20)
+  SOUND:StopSE("dinner time")
+
+  GAME:WaitFrames(80)
+  
+  SV.guild.having_dinner = false
+  SV.sleeping = true
+  GAME:EnterZone('thieves_hideout', -1, 15, 1)
+
+	GAME:CutsceneMode(false)
+end
+
+
+
+return dinning_hall

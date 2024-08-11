@@ -75,21 +75,23 @@ function gelid_overpass_ch2.firstIntro()
       local marker_es = MRKR('mrkr_es')
       local marker_ya = MRKR('mrkr_ya')
       GROUND:Unhide('Explorer1')
-      GROUND:Unhide('Explorer2')
+      GAME:WaitFrames(10)
       GROUND:Unhide('yamask')
+    GAME:WaitFrames(10)
+    GROUND:Unhide('Explorer2')
   
     local coro1 = TASK:BranchCoroutine(function() --GROUND:MoveToPosition(growlithe, 190, 24, false, 2) 
                                                 --GAME:WaitFrames(40)
-                                                  GROUND:MoveToPosition(growlithe, marker_gr.Position.X, marker_gr.Position.Y, false, 2)
+                                                  GROUND:MoveToPosition(growlithe, marker_gr.Position.X, marker_gr.Position.Y, false, 1.5)
                                                    end)
   
-    local coro2 = TASK:BranchCoroutine(function() GROUND:MoveToPosition(archaeologist, marker_ya.Position.X, marker_ya.Position.Y, false, 2) 
+    local coro2 = TASK:BranchCoroutine(function() GROUND:MoveToPosition(archaeologist, marker_ya.Position.X, marker_ya.Position.Y, false, 1.5) 
                                             --GAME:WaitFrames(40)
                                                  end)
   
   
     local coro3 = TASK:BranchCoroutine(function() --GROUND:MoveToPosition(espur, 190, 24, false, 2) 
-                                                GROUND:MoveToPosition(espur, marker_es.Position.X, marker_es.Position.Y, false, 2)
+                                                GROUND:MoveToPosition(espur, marker_es.Position.X, marker_es.Position.Y, false, 1.5)
                                                 --GAME:WaitFrames(40)
                                                  end)
      TASK:JoinCoroutines({coro1,coro2,coro3})
@@ -246,7 +248,7 @@ function gelid_overpass_ch2.firstIntro()
     CommonFunctions.Dialogue(growlithe, 3, "Worried", "Are you two archaeologists too?")
     GROUND:CharSetDrawEffect(archaeologist, DrawEffect.Trembling)
 
-    CommonFunctions.Dialogue(espur, 3, "Worried", "Maybe you know mister " .. archaeologist:GetDisplayName().. " too!")
+    CommonFunctions.Dialogue(espur, 3, "Normal", "Maybe you know mister " .. archaeologist:GetDisplayName().. "!")
     CommonFunctions.Dialogue(espur, 3, "Happy", "He's even got an amazing treasure on him!")
     GROUND:CharTurnToCharAnimated(espur, archaeologist, 4)
     CommonFunctions.Dialogue(espur, 3, "Happy", "Isn't that right mister-")
@@ -334,7 +336,7 @@ function gelid_overpass_ch2.firstIntro()
     GAME:CutsceneMode(false)
     --Enter the map.
     GAME:EnterZone("gelid_woods", 1, 0, 0)
-    
+    SV.gelid_woods.boss_intro = true
 
 end
 function gelid_overpass_ch2.repeatIntro()
@@ -350,7 +352,16 @@ function gelid_overpass_ch2.repeatIntro()
     GROUND:TeleportTo(growlithe, 159, 190, Direction.Right)
     GROUND:TeleportTo(espur, 210, 190, Direction.Left)
     GROUND:TeleportTo(archaeologist, 184, 190, Direction.Left)
+    GROUND:TeleportTo(player, mrkr_stPl.Position.X, 340, Direction.Up)
+    GROUND:TeleportTo(partner, mrkr_stPart.Position.X, 340, Direction.Up)
+
+
     GAME:MoveCamera(192, 192, 1, false)
+    GROUND:Unhide('Explorer1')
+   
+    GROUND:Unhide('yamask')
+
+  GROUND:Unhide('Explorer2')
     GAME:WaitFrames(70)
     GAME:FadeIn(20)
     GAME:WaitFrames(80)
@@ -400,7 +411,7 @@ function gelid_overpass_ch2.repeatIntro()
     GAME:FadeIn(1)
     GAME:WaitFrames(60)
 
-    CommonFunctions.Dialogue(growlithe, 3, "Determined", "You want more?[br]We have no problem in beating evildoers like you!")
+    CommonFunctions.Dialogue(growlithe, 3, "Determined", "You want more?[br]We have no problem in beating evildoers like you over and over again!")
     CommonFunctions.Dialogue(espur, 3, "Determined", "Bad guys like you will never win!")
 
     GAME:FadeOut(true,1)
@@ -424,14 +435,21 @@ function gelid_overpass_ch2.youWin()
     local archaeologist = CH('yamask')
     local player = CH('PLAYER')
     local partner = CH('Teammate1')
+    local mrkr = MRKR('theMRKRforY')
+    GROUND:Unhide('Explorer1')
+   
+    GROUND:Unhide('yamask')
+
+  GROUND:Unhide('Explorer2')
     GAME:CutsceneMode(true)
     GROUND:TeleportTo(growlithe, 159, 190, Direction.Right)
     GROUND:TeleportTo(espur, 210, 190, Direction.Left)
-    GROUND:TeleportTo(archaeologist, 184, 100, Direction.Left)
+    GROUND:TeleportTo(archaeologist, mrkr.Position.X, mrkr.Position.Y, Direction.Down)
+    
     GAME:MoveCamera(192, 192, 1, false)
     local mrkr_stPl = MRKR('mrkr_stop1')
     local mrkr_stPart = MRKR('mrkr_stop2')
-    GROUND:CharSetAction(growlithe, RogueEssence.Ground.PoseGroundAction(growlithe.Position, growlithe.Direction, RogueEssence.Content.GraphicsManager.GetAnimIndex("Cringe")))
+    GROUND:CharSetAction(growlithe, RogueEssence.Ground.PoseGroundAction(growlithe.Position, growlithe.Direction, RogueEssence.Content.GraphicsManager.GetAnimIndex("Hurt")))
     GROUND:CharSetAction(espur, RogueEssence.Ground.PoseGroundAction(espur.Position, espur.Direction, RogueEssence.Content.GraphicsManager.GetAnimIndex("Pain")))
    
     
@@ -451,26 +469,37 @@ function gelid_overpass_ch2.youWin()
 
     GAME:WaitFrames(50)
     CommonFunctions.Dialogue(growlithe, 3, "Dizzy", "Ugh...")
-    CommonFunctions.Dialogue(espur, 3, "Dizzy", "Bad guys...[pause=30]never win...")
+    CommonFunctions.Dialogue(espur, 3, "Dizzy", "Bad guys...[pause=30] never win...")
 
-    --[ Will this work?
-    TASK:WaitTask(_DUNGEON:ProcessBattleFX(growlithe, growlithe, _DATA.SendHomeFX))
+    local emitter = RogueEssence.Content.SingleEmitter(RogueEssence.Content.BeamAnimData("Column_Yellow", 3))
+    SOUND:PlaySE('Battle/DUN_Send_Home')
+    
+    GROUND:Hide('Explorer1')
+    GROUND:PlayVFX(emitter, growlithe.Bounds.Center.X, growlithe.Bounds.Center.Y)
     GAME:WaitFrames(30)
-    TASK:WaitTask(_DUNGEON:ProcessBattleFX(espur, espur, _DATA.SendHomeFX))
-    --]
+    SOUND:PlaySE('Battle/DUN_Send_Home')
+
+    GROUND:Hide('Explorer2')
+    GROUND:PlayVFX(emitter, espur.Bounds.Center.X, espur.Bounds.Center.Y)
+   
 
     GAME:WaitFrames(60)
-    CommonFunctions.Dialogue(partner, 3, "Normal", "Make sure he doesn't try to escape from behind.[br]I'll handle the archaeologist.")
+    CommonFunctions.Dialogue(partner, 3, "Normal", "Make sure he doesn't try and run for it.[br]I'll handle the archaeologist.")
     CommonFunctions.Dialogue(player, 3, "Worried", "Aye aye, cap'n...")
 
-    GROUND:MoveToPosition(partner, 184, 190, false, 2) 
+    GROUND:MoveToPosition(partner, 184, 190, false, 2)
+    GROUND:MoveToPosition(player, 184, 217, false, 2)
+
+    GROUND:EntTurn(partner, Direction.Up)
+    GROUND:EntTurn(player, Direction.Up)
+
     GAME:WaitFrames(60)
     CommonFunctions.Dialogue(partner, 3, "Determined", "Alright, buddy...")
     CommonFunctions.Dialogue(archaeologist, 3, "Teary-Eyed", "Just take it![br]Please, don't hurt me!")
     CommonFunctions.Monologue("The archaeologist handed " .. partner:GetDisplayName() .. " a mysterious and ancient looking chest.")
     GAME:WaitFrames(50)
     CommonFunctions.Dialogue(partner, 3, "Happy", "A pleasure doing business with you!")
-    GROUND:MoveToPosition(partner, 184, 217, false, 2) 
+   -- GROUND:MoveToPosition(partner, 184, 217, false, 2) 
     GROUND:CharTurnToCharAnimated(partner, player,4)
     GROUND:CharTurnToCharAnimated(player, partner,4)
 
@@ -485,7 +514,7 @@ function gelid_overpass_ch2.youWin()
     GAME:WaitFrames(60)
     CommonFunctions.Dialogue(partner, 3, "Worried", "We don't have any need of helping him...")
     CommonFunctions.Dialogue(partner, 3, "Worried", "In fact, [pause=30]it's better for us if we just leave him here.")
-    CommonFunctions.Dialogue(partner, 3, "Worried", "Those two shouldn't take too long to come back if I'm not mistaken, so let's not take too long.")
+    CommonFunctions.Dialogue(partner, 3, "Worried", "Those two shouldn't take too long to come back if I'm not mistaken, so we should get out of here quick.")
     GAME:WaitFrames(60)
     GROUND:CharTurnToCharAnimated(player, partner, 4)
 
@@ -503,7 +532,7 @@ function gelid_overpass_ch2.youWin()
     CommonFunctions.Dialogue(player, 2, "Pain", "(Why couldn't this amnesia have freed me of this type of feelings?)")
     GAME:WaitFrames(60)
 
-    CommonFunctions.Dialogue(partner, 3, "Normal", "Okay then.[br]Let's go back to the guild.")
+    CommonFunctions.Dialogue(partner, 3, "Normal", "Alright.[br]Let's go back to the guild.")
     GROUND:CharTurnToCharAnimated(partner, archaeologist, 4)
     GROUND:CharTurnToCharAnimated(player, archaeologist, 4)
     GAME:WaitFrames(40)
@@ -531,7 +560,12 @@ function gelid_overpass_ch2.youWin()
     GAME:WaitFrames(70)
 
     CommonFunctions.Dialogue(archaeologist, 3, "Teary-Eyed", "Oh dear...[pause=50] What am I going to do?")
+    GAME:FadeOut(false, 20)
+    GAME:WaitFrames(70)
+    GAME:EndDungeonRun(RogueEssence.Data.GameProgress.ResultType.Cleared, "thieves_hideout", -1, 2, 2, true, true)
 
-
+    SV.partner.entrance = 1
+    SV.gelid_woods.beat_boss = true
+    GAME:EnterZone("thieves_hideout", -1, 4, 1)
     GAME:CutsceneMode(false)
 end

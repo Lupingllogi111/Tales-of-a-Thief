@@ -173,7 +173,7 @@ function room_eve_and_dex.Eve_Action(obj, activator)
 	GAME:CutsceneMode(true)
 
  
-  if not SV.guild.presented_to_eve then
+  if SV.progression.chapter == 1 and not SV.guild.presented_to_eve then
   
 
     GAME:FadeOut(false, 20)
@@ -332,10 +332,16 @@ function room_eve_and_dex.Eve_Action(obj, activator)
           GROUND:CharTurnToChar(obj, activator)
           CommonFunctions.Dialogue(obj, 3, "Worried", "Yeah, I'm still doing this antidote.")
           CommonFunctions.Dialogue(obj, 3, "Happy", "Hopefully I will have it done for when you come back!")
-          CommonFunctions.Dialogue(obj, 3, "Happy", "And don't forget to tell me if anything hurts too bad after you come back!")
-    
+          CommonFunctions.Dialogue(obj, 3, "Happy", "And don't forget to tell me if anything hurts too bad after!")
           GROUND:EntTurn(obj, Direction.Right)
-    
+        elseif SV.progression.first_day_done then
+          GROUND:CharTurnToChar(obj, activator)
+
+          CommonFunctions.Dialogue(obj, 3, "Worried", "You didn't get too hurt from the fight with those explorers, right?")
+          CommonFunctions.Dialogue(obj, 3, "Worried", "For what I've heard, they had a good advantage over you...")
+          CommonFunctions.Dialogue(obj, 3, "Normal", "Make sure to be careful today, alright?")
+          GROUND:EntTurn(obj, Direction.Right)
+          
     
     
         end

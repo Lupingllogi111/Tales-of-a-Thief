@@ -639,12 +639,12 @@ SV.first_meeting_done = false
 SV.meeting_done = false
 SV.refreshed_shop_stock = true
 SV.shop_stock = {}
+SV.intro_to_board = false
 SV.progression =
 {
   chapter = 1,
-  first_day_done = false
-
-
+  first_day_done = false,
+  days_passed = -1
 
 }
 SV.special_dialogue =
@@ -657,6 +657,7 @@ SV.gelid_woods =
   intro = false,
   boss_intro = false,
   beat_boss = false
+
 }
 -----------------------------------------------
 -- Partner stuff                              |

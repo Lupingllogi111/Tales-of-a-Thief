@@ -382,6 +382,12 @@ function hideout_entrance_inside.Ditto_Action(obj, activator)
           CommonFunctions.Dialogue(dex, 3, "Happy", "Ready to go out on your first mission?")
           CommonFunctions.Dialogue(dex, 3, "Sad", "Hopefully it will be more exciting than mine...")
           GROUND:EntTurn(dex, Direction.UpRight)
+        elseif SV.progression.first_day_done then 
+          GROUND:CharTurnToChar(dex, player)
+          CommonFunctions.Dialogue(dex, 3, "Happy", "I heard how you beat those explorers!")
+          CommonFunctions.Dialogue(dex, 3, "Sad", "It definitely was more exciting than walking around to find nothing,[pause=30] that's for sure")
+        
+          GROUND:EntTurn(dex, Direction.UpRight)
 
         end
 
@@ -399,13 +405,18 @@ function hideout_entrance_inside.Kit_Action(obj, activator)
   local player = activator
   local kit = obj
   GAME:CutsceneMode(true)
-
+  local lilith = CH('Lilith')
   if SV.progression.chapter == 2 then
     if not SV.progression.first_day_done then
       GROUND:CharTurnToChar(kit, player)
       CommonFunctions.Dialogue(kit, 3, "Happy", "I can't wait to see what you're capable of, ".. player:GetDisplayName().."!")
       GROUND:EntTurn(kit, Direction.UpLeft)
 
+    elseif SV.progression.first_day_done then 
+      GROUND:CharTurnToChar(kit, player)
+      CommonFunctions.Dialogue(kit, 3, "Happy", "Congratulations on beating those goons!")
+      CommonFunctions.Dialogue(kit, 3, "Joyous", "Now " .. lilith:GetDisplayName() .. " lost the bet and I don't have to pay her anymore!")
+      GROUND:EntTurn(kit, Direction.UpLeft)
 
 
     end
@@ -431,7 +442,16 @@ function hideout_entrance_inside.Lilith_Action(obj, activator)
 
       GROUND:EntTurn(lilith, Direction.DownRight)
 
+    elseif SV.progression.first_day_done then
+      GROUND:CharTurnToChar(lilith, player)
+  
+      CommonFunctions.Dialogue(lilith, 3, "Happy", "You showed those explorers what was good, huh?")
+      CommonFunctions.Dialogue(lilith, 3, "Normal", "Honestly, I knew you were going to win, but I wanted to clear the debt from [color=#00ffff]Kit[color].")
+      GAME:WaitFrames(40)
+      CommonFunctions.Dialogue(lilith, 3, "Normal", "Come on, you really think that I would seriously bet on something like this?")
 
+
+      GROUND:EntTurn(lilith, Direction.DownRight)
 
     end
 
@@ -452,8 +472,12 @@ function hideout_entrance_inside.Weev_Action(obj, activator)
 
       GROUND:EntTurn(obj, Direction.UpLeft)
 
+    elseif SV.progression.first_day_done then
+      GROUND:CharTurnToChar(obj, activator)
+      CommonFunctions.Dialogue(obj, 3, "Normal", "Hmm, I have heard about your ")
+      CommonFunctions.Dialogue(obj, 3, "Pain", "You lot really know how to hide yourselves, don't you?")
 
-
+      GROUND:EntTurn(obj, Direction.UpLeft)
     end
 
 

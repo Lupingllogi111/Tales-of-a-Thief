@@ -1,3 +1,4 @@
+
 --[[
     init.lua
     Created: 05/22/2024 12:12:39
@@ -30,10 +31,7 @@ function gelid_overpass.Init(map)
   GROUND:Hide('Explorer1')
   GROUND:Hide('Explorer2')
   GROUND:Hide('yamask')
-  UI:WaitShowTitle(GAME:GetCurrentGround().Name:ToLocal(), 50)
-  GAME:WaitFrames(50)
-  UI:WaitHideTitle(50)
-  GAME:WaitFrames(60)
+ 
 
 end
 
@@ -41,15 +39,31 @@ end
 --Engine callback function
 function gelid_overpass.Enter(map)
  
-  GAME:CutsceneMode(true)
-  SOUND:PlayBGM("In the Depths of the Pit.ogg", true) 
   if not SV.gelid_woods.boss_intro and not SV.progression.first_day_done and not SV.gelid_woods.beat_boss then --first time
+    UI:WaitShowTitle(GAME:GetCurrentGround().Name:ToLocal(), 50)
+    GAME:WaitFrames(50)
+    UI:WaitHideTitle(50)
+    GAME:WaitFrames(60)
+    GAME:CutsceneMode(true)
+    SOUND:PlayBGM("In the Depths of the Pit.ogg", true) 
     gelid_overpass_ch2.firstIntro()
   elseif SV.gelid_woods.boss_intro and not SV.gelid_woods.beat_boss and not SV.progression.first_day_done then --every time you enter after the first cutscene, this loops
+    UI:WaitShowTitle(GAME:GetCurrentGround().Name:ToLocal(), 50)
+    GAME:WaitFrames(50)
+    UI:WaitHideTitle(50)
+    GAME:WaitFrames(60)
+    GAME:CutsceneMode(true)
+    SOUND:PlayBGM("In the Depths of the Pit.ogg", true) 
     gelid_overpass_ch2.repeatIntro()
   elseif SV.gelid_woods.boss_intro and SV.gelid_woods.beat_boss and not SV.progression.first_day_done then --The winning cutscene
     gelid_overpass_ch2.youWin()
   elseif SV.gelid_woods.boss_intro and SV.gelid_woods.beat_boss and SV.progression.first_day_done then --regular "go back"
+    UI:WaitShowTitle(GAME:GetCurrentGround().Name:ToLocal(), 50)
+    GAME:WaitFrames(50)
+    UI:WaitHideTitle(50)
+    GAME:WaitFrames(60)
+    GAME:CutsceneMode(true)
+    SOUND:PlayBGM("In the Depths of the Pit.ogg", true) 
     GAME:FadeIn(20)
   end
 

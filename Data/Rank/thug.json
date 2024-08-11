@@ -1,0 +1,14 @@
+﻿{
+"Version": "0.7.24.0",
+"Object": {
+"$type": "RogueEssence.Data.RankData, RogueEssence",
+"Name": {
+"DefaultText": "Thug",
+"LocalTexts": {}
+},
+"Comment": "",
+"BagSize": 32,
+"FameToNext": 250,
+"Next": "pickpocketer"
+}
+}

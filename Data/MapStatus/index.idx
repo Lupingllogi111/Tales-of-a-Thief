@@ -1,0 +1,21 @@
+﻿{
+"Version": "0.8.0.0",
+"Object": {
+"$type": "System.Collections.Generic.Dictionary`2[[System.String, System.Private.CoreLib],[RogueEssence.Data.EntrySummary, RogueEssence]], System.Private.CoreLib",
+"snow": {
+"Name": {
+"DefaultText": "Snow",
+"LocalTexts": {
+"fr": "Neigeux",
+"de": "Schnee",
+"es": "Nieve",
+"it": "Neve",
+"zh-hans": "下雪"
+}
+},
+"Released": true,
+"Comment": "",
+"SortOrder": 0
+}
+}
+}

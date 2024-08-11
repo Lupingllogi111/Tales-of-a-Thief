@@ -6,6 +6,7 @@
 -- Commonly included lua functions and data
 require 'common'
 require 'ground.job_boards.job_boards_ch2'
+require 'CommonFunctions'
 -- Package name
 local job_boards = {}
 
@@ -29,6 +30,17 @@ function job_boards.Init(map)
   local partners = CH('Teammate1')
   AI:SetCharacterAI(partners, "ai.ground_partner", CH('PLAYER'), partners.Position)
   AI:EnableCharacterAI(partners)
+  local player = CH('PLAYER')
+  local partner = CH('Teammate1')
+  local kit = CH('Kit')
+  local lilith = CH('Lilith')
+  local eve = CH('Eve')
+  local dex = CH('Dex')
+  local lily = CH('Lily')
+  local celia = CH('Celia')
+  local kiran = CH('Kiran')
+  local lucio = CH('Lucio')
+  local boss = CH("Ma'am")
   partners.CollisionDisabled = true
 	if not SV.guildmasters_office.officially_joined or SV.meeting_done then
 		GROUND:Hide("Ma'am")
@@ -64,9 +76,18 @@ function job_boards.Init(map)
 			job_boards_ch2.firstMeeting()
 
 		else --regular meeting
-			--I'll do it later.
+			if SV.progression.first_day_done then
+				if not SV.intro_to_board then
+					--Regular intro and teaches you how to use the board.
+					job_boards_ch2.introToTheBoard()
 
+					
+				else
 
+				end
+			else
+				--Regular
+			end
 		end
 
 	end
@@ -311,9 +332,11 @@ end
 -- Entities Callbacks
 -------------------------------
 function job_boards.Board2_Action(obj, activator)
-	GAME:CutsceneMode(true)
-
-	if not SV.guildmasters_office.officially_joined then
+	local partner = CH('Teammate1')
+	local player = CH('PLAYER')
+	local board = obj
+	if not SV.guildmasters_office.officially_joined and not SV.progression.first_day_done then
+		GAME:CutsceneMode(true)
 
 		local partner = CH('Teammate1')
 		local player = CH('PLAYER')
@@ -324,14 +347,16 @@ function job_boards.Board2_Action(obj, activator)
 
 
 		Dialogue(partner, "Normal", "That is the request board,[pause=30] where us members take missions.")
-		Dialogue(partner, "Worried", "You shouldn't look at them too much today.")
-		Dialogue(partner, "Normal", "Let's go look somewhere else.[pause=0] I'm sure [color=#00ffff]Ma'am[color] will explain to you tomorrow.")
+		Dialogue(partner, "Worried", "You shouldn't give it too much attention today.")
+		Dialogue(partner, "Normal", "Let's go look somewhere else.[pause=0] I'm sure [color=#00ffff]Ma'am[color] will explain everything to you tomorrow.")
 
 
 
 
 
-	elseif not SV.progression.first_day_done then
+	elseif SV.guildmasters_office.officially_joined and not SV.progression.first_day_done then
+		GAME:CutsceneMode(true)
+
 		local partner = CH('Teammate1')
 		local player = CH('PLAYER')
 		GROUND:CharTurnToChar(partner, player)
@@ -342,11 +367,22 @@ function job_boards.Board2_Action(obj, activator)
 
 		Dialogue(partner, "Worried", "We don't need to look at the requests in the board today.")
 		Dialogue(partner, "Normal", "Let's go prepare ourselves for the mission.")
-
-
-
+	elseif SV.guildmasters_office.officially_joined and SV.progression.first_day_done then
+		--Open the request board
 		
+		GROUND:CharTurnToChar(partner, player) 
 
+		partner.IsInteracting = true
+		GROUND:CharSetAnim(partner, 'None', true)
+		GROUND:CharSetAnim(player, 'None', true)
+		
+		local menu = BoardSelectionMenu:new(COMMON.MISSION_BOARD_MISSION)
+		UI:SetCustomMenu(menu.menu)
+		UI:WaitForChoice()
+	  
+		partner.IsInteracting = false
+		GROUND:CharEndAnim(partner)
+		GROUND:CharEndAnim(player)	
 
 	end
 	GAME:CutsceneMode(false)
@@ -363,8 +399,10 @@ function job_boards.Kiran_Action(obj, activator)
 		Dialogue(obj, "Normal", "We are just looking for an easy request to do today!")
 		GROUND:EntTurn(obj, Direction.Up)
 		
-		
-		
+	elseif SV.progression.chapter == 2 and SV.progression.first_day_done then
+		GROUND:CharTurnToChar(obj, activator)
+		Dialogue(obj, "Normal", "If you want to check the board, go ahead.")
+		GROUND:EntTurn(obj, Direction.Up)
 		
 
 
@@ -382,8 +420,13 @@ function job_boards.Lucio_Action(obj, activator)
 		Dialogue(obj, "Happy", "I'll be cheering for you!")
 
 		GROUND:EntTurn(obj, Direction.UpLeft)
+	elseif SV.progression.chapter == 2 and SV.progression.first_day_done then
 		
+		GROUND:CharTurnToChar(obj, activator)
+		Dialogue(obj, "Happy", "Congratulations on getting the treasure yesterday!")
+		Dialogue(obj, "Worried", "Did you manage to find out what was inside?")
 
+		GROUND:EntTurn(obj, Direction.UpLeft)
 	end
 	GAME:CutsceneMode(false)
 

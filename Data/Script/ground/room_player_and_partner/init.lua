@@ -5,7 +5,7 @@
 ]]--
 -- Commonly included lua functions and data
 require 'common'
-
+require 'ground.room_player_and_partner.room_player_and_partner_ch2'
 -- Package name
 local room_player_and_partner = {}
 
@@ -35,7 +35,7 @@ function room_player_and_partner.Init(map)
     AI:SetCharacterAI(partner, "ai.ground_partner", CH('PLAYER'), partner.Position)
     AI:EnableCharacterAI(partner)
   else
-    GROUND:Unhide('fire') -- Having fire steal your oxygen while you sleep inside a cave is totally not risky at all, what you mean.
+    GROUND:Unhide('fire') -- Having fire burn and steal your oxygen while you sleep inside a cave is totally not risky at all, what do you mean.
   end
 end
 
@@ -55,12 +55,18 @@ function room_player_and_partner.Enter(map)
     GROUND:CharTurnToChar(partner, player)
     GROUND:AddMapStatus("dark")
     GAME:CutsceneMode(true)
-    if not SV.guildmasters_office.officially_joined then
+    if SV.progression.chapter == 1 then
+      if not SV.guildmasters_office.officially_joined then
       
-      firstCutscene()
+        firstCutscene()
 
+      end
+    elseif SV.progression.chapter == 2 then
+      room_player_and_partner_ch2.firstDaySuccessfulCut()
+     
+      
+    
     end
-
   end
   GAME:FadeIn(20)
 

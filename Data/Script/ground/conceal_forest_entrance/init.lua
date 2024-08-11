@@ -857,7 +857,7 @@ function conceal_forest_entrance.Signpost_Action(obj, activator)
   GROUND:CharTurnToChar(partner, player)
 
   UI:ResetSpeaker()
-  UI:WaitShowDialogue("<---: [color=#fcacac]Twilight Town[color].\n--->: Definitly not a zekret haidaout.")
+  UI:WaitShowDialogue("<---: [color=#fcacac]Twilight Town[color].\n--->: Definitely not a sekret hideout.")
   GROUND:CharSetEmote(activator, "sweatdrop", 1)
   SOUND:PlaySE("Battle/EVT_Emote_Sweatdrop")
   GAME:WaitFrames(90)
@@ -1044,18 +1044,80 @@ end
 
 --Engine callback function
 function conceal_forest_entrance.GameSave(map)
+  if SV.conceal_forest_entrance.found_player then
+    local partner = CH('Teammate1')
+    SV.partner.positionX = partner.Position.X
+    SV.partner.positionY = partner.Position.Y
+    SV.partner.direction = DirToNum(partner.Direction)
 
+
+
+  end
 
 end
 
 
 --Engine callback function
 function conceal_forest_entrance.GameLoad(map)
- SOUND:PlayBGM("B26. Ambush Forest.ogg", true) 
+  if SV.conceal_forest_entrance.found_player then
+    local partner = CH('Teammate1')
+    SV.partner.positionX = partner.Position.X
+    SV.partner.positionY = partner.Position.Y
+    SV.partner.direction = DirToNum(partner.Direction)
+  else
+    SOUND:PlayBGM("B26. Ambush Forest.ogg", true) 
+
+  end
   GAME:FadeIn(20)
 
 end
+function DirToNum(dir)
+	--up is 0, upright is 1, ... up left is 7
+	local num = -1
+	if dir == Direction.Up then
+		num = 0
+	elseif dir == Direction.UpRight then
+		num = 1
+	elseif dir == Direction.Right then
+		num = 2
+	elseif dir == Direction.DownRight then
+		num = 3
+	elseif dir == Direction.Down then
+		num = 4
+	elseif dir == Direction.DownLeft then
+		num = 5
+	elseif dir == Direction.Left then
+		num = 6
+	elseif dir == Direction.UpLeft then
+		num = 7
+	end
+	
+	return num
+	
+end
+--converts a number to a direction
+function NumToDir(num)
+	local dir = Direction.None
+	if num % 8 == 0 then 
+		dir = Direction.Up
+	elseif num % 8 == 1 then
+		dir = Direction.UpRight
+	elseif num % 8 == 2 then
+		dir = Direction.Right
+	elseif num % 8 == 3 then
+		dir = Direction.DownRight
+	elseif num % 8 == 4 then
+		dir = Direction.Down
+	elseif num % 8 == 5 then
+		dir = Direction.DownLeft
+	elseif num % 8 == 6 then
+		dir = Direction.Left
+	elseif num % 8 == 7 then
+		dir = Direction.UpLeft
+	end
 
+	return dir
+end 
 -------------------------------
 -- Entities Callbacks
 -------------------------------

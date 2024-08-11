@@ -5,7 +5,7 @@
 ]]--
 -- Commonly included lua functions and data
 require 'common'
-
+require 'ground.guildmasters_office.guildmasters_office_ch2'
 -- Package name
 local guildmasters_office = {}
 
@@ -45,23 +45,38 @@ end
 ---guildmasters_office.Enter(map)
 --Engine callback function
 function guildmasters_office.Enter(map)
-  
-  if not SV.guildmasters_office.officially_joined then
+  if SV.progression.chapter == 1 then
+    if not SV.guildmasters_office.officially_joined then
     joiningTime()
-  elseif SV.guildmasters_office.officially_joined then
+    elseif SV.guildmasters_office.officially_joined then
     GROUND:Hide('Plusle')
     GROUND:Hide('Minun')
     SOUND:PlayBGM("Wigglytuff's Guild.ogg", true) 
 
     GAME:FadeIn(20)
-  end
+    end
+  elseif SV.progression.chapter == 2 then
+    if SV.gelid_woods.beat_boss and not SV.progression.first_day_done then
+      guildmasters_office_ch2.first_day_end()
 
+
+
+    end
+
+  end
+  
+  --[[
   if not SV.guildmasters_office.on_cutscene and SV.guildmasters_office.officially_joined then
     --Took this to its own function to not crowd the script.
     bossEasterEggs()
   end
-
-
+  ]]--
+  if SV.progression.chapter == 2 then
+    if SV.progression.beat_boss and not SV.progression.first_day_done then
+      hideout_entrance_ch2.completedMission()
+  
+    end
+  end
 end
 
 ---guildmasters_office.Exit(map)
@@ -335,7 +350,7 @@ function joiningTime()
   GROUND:EntTurn(partner, Direction.Down)
   GAME:WaitFrames(50) 
 
-  Dialogue(partner, "Happy", "Goodbye, team Overcharge![br]It was a nice battle!")
+  Dialogue(partner, "Happy", "Goodbye, team [color=#FFA5FF]Overcharge[color]![br]It was a nice battle!")
   GROUND:EntTurn(player, Direction.UpRight)
   GAME:WaitFrames(4) 
   GROUND:EntTurn(player, Direction.Right)
